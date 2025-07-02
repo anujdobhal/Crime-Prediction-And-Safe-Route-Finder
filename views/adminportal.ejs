@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crime Prediction System | Admin Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #3498db;
+            --dark-blue: #2980b9;
+            --light-gray: #f5f7fa;
+            --medium-gray: #e0e5ec;
+            --dark-gray: #7f8c8d;
+            --text-color: #2c3e50;
+            --shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --danger: #e74c3c;
+            --success: #2ecc71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e0f7fa, #bbdefb);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--text-color);
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 40px;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px;
+        }
+
+        .page-title {
+            text-align: center;
+            color: var(--primary-blue);
+            margin-bottom: 30px;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .crime-form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark-gray);
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--medium-gray);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary-blue);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .submit-btn {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            background: var(--dark-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(41, 128, 185, 0.3);
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .success-message {
+            color: var(--success);
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .crime-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 30px;
+            }
+            
+            .page-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px;
+            }
+            
+            .page-title {
+                font-size: 1.5rem;
+            }
+            
+            .submit-btn {
+                padding: 12px;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="page-title">Report New Crime Incident</h2>
+        
+        <form class="crime-form" id="crimeForm">
+            <div class="form-group">
+                <label for="latitude">Latitude</label>
+                <input type="number" id="latitude" step="any" placeholder="Enter latitude">
+                <div class="error-message" id="lat-error">Valid latitude is required</div>
+            </div>
+
+            <div class="form-group">
+                <label for="longitude">Longitude</label>
+                <input type="number" id="longitude" step="any" placeholder="Enter longitude">
+                <div class="error-message" id="long-error">Valid longitude is required</div>
+            </div>
+
+            <div class="form-group full-width">
+                <label for="crimeType">Crime Type</label>
+                <select id="crimeType">
+                    <option value="">Select crime type</option>
+                    <option value="theft">Theft</option>
+                    <option value="assault">Assault</option>
+                    <option value="burglary">Burglary</option>
+                    <option value="vandalism">Vandalism</option>
+                    <option value="other">Other</option>
+                </select>
+                <div class="error-message" id="type-error">Please select a crime type</div>
+            </div>
+
+            <div class="form-group full-width">
+                <label for="crimeTime">Date & Time of Incident</label>
+                <input type="datetime-local" id="crimeTime">
+                <div class="error-message" id="time-error">Please select incident time</div>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-paper-plane"></i>
+                Submit Crime Report
+            </button>
+            
+            <div class="success-message" id="successMsg">Crime report submitted successfully!</div>
+        </form>
+        <button type="submit" class="submit-btn" id="trainer-btn" style="width:100% ;margin-top: 20px;">
+                <i class="fas fa-brain"></i>
+                Train Model
+            </button>
+    </div>
+
+    <script>
+        // Keep existing JavaScript functionality unchanged
+        document.getElementById('crimeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+            document.getElementById('successMsg').style.display = 'none';
+
+            const lat = document.getElementById('latitude').value.trim();
+            const long = document.getElementById('longitude').value.trim();
+            const crimeType = document.getElementById('crimeType').value;
+            const crimeTime = document.getElementById('crimeTime').value;
+
+            let isValid = true;
+
+            if (!lat || isNaN(lat) || lat < -90 || lat > 90) {
+                document.getElementById('lat-error').style.display = 'block';
+                isValid = false;
+            }
+
+            if (!long || isNaN(long) || long < -180 || long > 180) {
+                document.getElementById('long-error').style.display = 'block';
+                isValid = false;
+            }
+
+            if (!crimeType) {
+                document.getElementById('type-error').style.display = 'block';
+                isValid = false;
+            }
+
+            if (!crimeTime) {
+                document.getElementById('time-error').style.display = 'block';
+                isValid = false;
+            }
+
+            if (isValid) {
+                const data = {
+                    latitude: lat,
+                    longitude: long,
+                    crimeType: crimeType,
+                    crimeTime: crimeTime
+                };
+
+                fetch('/add-crime', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Server error');
+                    return response.json();
+                })
+                .then(result => {
+                    if (result.success) {
+                        document.getElementById('successMsg').style.display = 'block';
+                        setTimeout(() => {
+                            document.getElementById('crimeForm').reset();
+                            document.getElementById('successMsg').style.display = 'none';
+                        }, 2000);
+                    } else {
+                        alert('Failed to save data.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    alert('An error occurred while saving the data.');
+                });
+            }
+
+
+        });
+        document.getElementById('trainer-btn').addEventListener('click', function () {
+            fetch('/train-model', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    alert(result.message);
+                } else {
+                    alert("Training failed: " + result.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error during training:', error);
+                alert("An error occurred while training.");
+            });
+        });
+    </script>
+</body>
+</html>
